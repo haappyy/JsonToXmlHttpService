@@ -1,5 +1,7 @@
 package com.example.JsonToXmlHttpService;
 
+import com.github.underscore.lodash.Json;
+import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -21,8 +23,13 @@ public class ConversionController {
     @RequestMapping(value = "/convertJsonToXML", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> convertJsonToXML(@RequestBody String json) {
         LOGGER.log(Level.INFO, "Should convert to xml:" + json);
-        String xml = jsonXmlConversionService.convertJsonToXML(json);
-        LOGGER.log(Level.INFO, "Resulting xml:" + xml);
-        return ResponseEntity.ok(xml);
+        try {
+            String xml = jsonXmlConversionService.convertJsonToXML(json);
+            LOGGER.log(Level.INFO, "Resulting xml:" + xml);
+            return ResponseEntity.ok(xml);
+        } catch (Json.ParseException e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        }
     }
 }

@@ -12,6 +12,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @EnableAutoConfiguration
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
@@ -39,6 +40,14 @@ class JsonToXmlHttpServiceApplicationTests {
 								"<a>\n" +
 								"  <b>data</b>\n" +
 								"</a>"));
+	}
+
+	@Test
+	void invalidJsonTest() throws Exception {
+		mockMvc.perform(post("/convertJsonToXML")
+				.content("invalid".getBytes()))
+				.andDo(print())
+				.andExpect(status().isBadRequest());
 	}
 
 
