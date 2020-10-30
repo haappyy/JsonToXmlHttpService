@@ -1,9 +1,10 @@
 package com.example.JsonToXmlHttpService;
 
+import com.github.underscore.lodash.U;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ConversionService {
+public class JsonXmlConversionService {
 
     /**
      * Converts the provided JSON into XML.
@@ -15,7 +16,7 @@ public class ConversionService {
      * @see <a href="https://github.com/javadev/underscore-java">Conversion rules</a>
      */
     public String convertJsonToXML(String json){
-        return null;
+        return U.jsonToXml(json);
     }
 
 }
