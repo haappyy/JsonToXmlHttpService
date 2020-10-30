@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.xml.sax.SAXParseException;
 
 import javax.management.modelmbean.XMLParseException;
 import java.util.logging.Level;
@@ -38,9 +39,13 @@ public class ConversionController {
     @RequestMapping(value = "/convertXmlToJson", method = RequestMethod.POST, produces = MediaType.APPLICATION_XML_VALUE)
     public ResponseEntity<String> convertXmlToJson(@RequestBody String xml) {
         LOGGER.log(Level.INFO, "Should convert to json:" + xml);
-
+        try {
         String json = jsonXmlConversionService.convertXMLtoJson(xml);
         LOGGER.log(Level.INFO, "Resulting json:" + json);
         return ResponseEntity.ok(json);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        }
     }
 }

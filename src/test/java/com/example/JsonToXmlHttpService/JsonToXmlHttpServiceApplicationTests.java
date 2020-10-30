@@ -64,5 +64,12 @@ class JsonToXmlHttpServiceApplicationTests {
 								"}"));
 	}
 
+	@Test
+	void invalidXmlTest() throws Exception {
+		mockMvc.perform(post("/convertXmlToJson")
+				.content("Invalid".getBytes()))
+				.andDo(print())
+				.andExpect(status().isBadRequest());
+	}
 
 }
