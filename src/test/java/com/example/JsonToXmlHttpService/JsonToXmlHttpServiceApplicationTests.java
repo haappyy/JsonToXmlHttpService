@@ -9,6 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 
@@ -26,6 +27,18 @@ class JsonToXmlHttpServiceApplicationTests {
 		mockMvc.perform(get("/helloWorld").accept(MediaType.ALL))
 				.andDo(print())
 				.andExpect(content().string("Hello World"));
+	}
+
+	@Test
+	void jsonTest() throws Exception {
+		mockMvc.perform(post("/convertJsonToXML")
+				.content("{\"a\":{\"b\":\"data\"}}".getBytes()))
+				.andDo(print())
+				.andExpect(content().string(
+						"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+								"<a>\n" +
+								"  <b>data</b>\n" +
+								"</a>"));
 	}
 
 
