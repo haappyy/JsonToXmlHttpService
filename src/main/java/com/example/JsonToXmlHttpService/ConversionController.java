@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.xml.sax.SAXParseException;
 
+import javax.management.modelmbean.XMLParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -28,6 +30,20 @@ public class ConversionController {
             LOGGER.log(Level.INFO, "Resulting xml:" + xml);
             return ResponseEntity.ok(xml);
         } catch (Json.ParseException e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/convertXmlToJson", method = RequestMethod.POST, produces = MediaType.APPLICATION_XML_VALUE)
+    public ResponseEntity<String> convertXmlToJson(@RequestBody String xml) {
+        LOGGER.log(Level.INFO, "Should convert to json:" + xml);
+        try {
+        String json = jsonXmlConversionService.convertXMLtoJson(xml);
+        LOGGER.log(Level.INFO, "Resulting json:" + json);
+        return ResponseEntity.ok(json);
+        } catch (IllegalArgumentException e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().build();
         }
