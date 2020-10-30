@@ -20,11 +20,13 @@ class JsonToXmlHttpServiceApplicationTests {
 	@Autowired
 	private MockMvc mockMvc;
 
+
 	@Test
-	void getAuthorTest() throws Exception {
+	void helloWorldTest() throws Exception {
 		mockMvc.perform(get("/helloWorld").accept(MediaType.ALL))
 				.andDo(print())
 				.andExpect(content().string("Hello World"));
 	}
+
 
 }
