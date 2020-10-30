@@ -50,5 +50,19 @@ class JsonToXmlHttpServiceApplicationTests {
 				.andExpect(status().isBadRequest());
 	}
 
+	@Test
+	void xmlTest() throws Exception {
+		mockMvc.perform(post("/convertXmlToJson")
+				.content("<a><b>data</b></a>".getBytes()))
+				.andDo(print())
+				.andExpect(content().string(
+						"{\n" +
+								"  \"a\": {\n" +
+								"    \"b\": \"data\"\n" +
+								"  },\n" +
+								"  \"#omit-xml-declaration\": \"yes\"\n" +
+								"}"));
+	}
+
 
 }
